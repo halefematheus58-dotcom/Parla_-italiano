@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#176b45">
+  <meta name="description" content="Aprenda italiano com aulas práticas, cultura e desafios diários.">
+  <title>Parla! — Italiano na vida real</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Parla início">
+        <span class="brand-mark">p.</span>
+        <span>parla<span class="brand-light"> / italiano</span></span>
+      </a>
+      <div class="top-actions">
+        <span class="streak-pill">🔥 <b id="topStreak">0</b> dias</span>
+        <button id="logoutBtn" class="button button-quiet hidden" type="button">Sair</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="authView" class="auth-layout">
+        <div class="hero-copy">
+          <span class="eyebrow">LINGUA · CULTURA · CONVERSA</span>
+          <h1>Mais que estudar.<br><em>Viva o italiano.</em></h1>
+          <p>
+            Um espaço de aprendizado com aulas práticas, cultura italiana
+            e pequenas missões para levar o idioma para a sua rotina.
+          </p>
+          <div class="hero-points">
+            <span>01 / Aulas guiadas e trilhas por tema</span>
+            <span>02 / Prática em situações reais</span>
+            <span>03 / Seu progresso, salvo na conta</span>
+          </div>
+          <div class="editorial-art" aria-hidden="true">
+            <div class="art-stamp">ITALIA<br>PER TE</div>
+            <div class="art-sun"></div>
+            <div class="art-arch"></div>
+            <div class="art-caption">una nuova lingua,<br>un nuovo mondo.</div>
+            <span class="art-number">01</span>
+          </div>
+        </div>
+
+        <div class="auth-card">
+          <div class="auth-tabs">
+            <button class="auth-tab active" data-mode="login" type="button">Entrar</button>
+            <button class="auth-tab" data-mode="signup" type="button">Criar conta</button>
+          </div>
+          <h2 id="authTitle">A sua próxima história começa aqui.</h2>
+          <p id="authSubtitle" class="muted">Entre na sua área de aprendizado.</p>
+
+          <form id="authForm">
+            <label for="email">E-mail</label>
+            <input id="email" name="email" type="email" autocomplete="email"
+              placeholder="voce@email.com" required>
+
+            <label for="password">Senha</label>
+            <input id="password" name="password" type="password"
+              autocomplete="current-password" minlength="6"
+              placeholder="Mínimo de 6 caracteres" required>
+
+            <button id="authSubmit" class="button button-primary full-width" type="submit">
+              Entrar na minha conta
+            </button>
+          </form>
+
+          <button id="forgotBtn" class="text-button" type="button">Esqueci minha senha</button>
+          <p id="authMessage" class="message" role="status"></p>
+          <p class="fine-print">
+            Sua conta e seu progresso ficam protegidos pelo serviço
+            de autenticação configurado pelo projeto.
+          </p>
+        </div>
+      </section>
+
+      <section id="dashboardView" class="dashboard hidden">
+        <div class="welcome-row">
+          <div>
+            <span class="eyebrow">IL TUO SPAZIO DI STUDIO</span>
+            <h1 id="welcomeTitle">Buongiorno!</h1>
+            <p class="muted">Escolha uma prática e avance no seu ritmo.</p>
+          </div>
+          <div class="daily-goal">
+            <span class="goal-icon">☕</span>
+            <div>
+              <b>Ritual de hoje</b>
+              <span>Uma pausa para o italiano</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card stat-xp">
+            <span class="stat-icon">⚡</span>
+            <span class="stat-label">Experiência</span>
+            <strong><span id="xpValue">0</span> XP</strong>
+            <span class="stat-foot">Continue avançando</span>
+          </article>
+          <article class="stat-card stat-level">
+            <span class="stat-icon">🏆</span>
+            <span class="stat-label">Seu nível</span>
+            <strong id="levelValue">1</strong>
+            <span class="stat-foot" id="levelCaption">Principiante</span>
+          </article>
+          <article class="stat-card stat-streak">
+            <span class="stat-icon">🔥</span>
+            <span class="stat-label">Sequência</span>
+            <strong><span id="streakValue">0</span> dias</strong>
+            <span class="stat-foot">Volte amanhã!</span>
+          </article>
+          <article class="stat-card stat-lessons">
+            <span class="stat-icon">📚</span>
+            <span class="stat-label">Lições concluídas</span>
+            <strong id="lessonsValue">0</strong>
+            <span class="stat-foot">Cada lição conta</span>
+          </article>
+        </div>
+
+        <div class="content-grid">
+          <section class="main-column">
+            <article class="panel continue-panel">
+              <div class="panel-heading">
+                <div>
+                  <span class="eyebrow">PERCORSO DI STUDIO</span>
+                  <h2>Seu plano de estudos</h2>
+                  <p class="section-intro">
+                    60 atividades em 7 dias, do básico aos desafios mais avançados.
+                  </p>
+                </div>
+                <span class="level-chip">60 ATIVIDADES · 7 DIAS</span>
+              </div>
+
+              <div class="course-progress">
+                <div class="progress-track">
+                  <div id="courseProgress" class="progress-fill" style="width:0%"></div>
+                </div>
+                <span id="courseProgressLabel">0% concluído</span>
+              </div>
+
+              <nav class="day-navigation" aria-label="Dias de estudo">
+                <button type="button" class="day-button active" data-day="1">Segunda</button>
+                <button type="button" class="day-button" data-day="2">Terça</button>
+                <button type="button" class="day-button" data-day="3">Quarta</button>
+                <button type="button" class="day-button" data-day="4">Quinta</button>
+                <button type="button" class="day-button" data-day="5">Sexta</button>
+                <button type="button" class="day-button" data-day="6">Sábado</button>
+                <button type="button" class="day-button" data-day="7">Domingo</button>
+              </nav>
+
+              <div class="selected-day-heading">
+                <div>
+                  <span class="eyebrow" id="selectedDayEyebrow">GIORNO 01</span>
+                  <h3 id="selectedDayTitle">Segunda-feira</h3>
+                  <p id="selectedDayDescription">Comece sua jornada pelo italiano.</p>
+                </div>
+                <span class="day-flag">🇮🇹</span>
+              </div>
+
+              <div id="lessonList" class="lesson-list" aria-label="Atividades do dia"></div>
+            </article>
+
+            <article id="lessonPanel" class="panel lesson-panel hidden">
+              <div class="lesson-top">
+                <button id="closeLesson" class="text-button" type="button">
+                  ← Voltar ao curso
+                </button>
+                <span id="lessonStepLabel">Pergunta 1 de 3</span>
+              </div>
+              <div class="lesson-progress">
+                <div id="lessonProgressFill"></div>
+              </div>
+              <div id="lessonContent"></div>
+              <p id="lessonFeedback" class="message" role="status"></p>
+              <button id="checkAnswer" class="button button-primary full-width"
+                type="button" disabled>
+                Conferir resposta
+              </button>
+            </article>
+          </section>
+
+          <aside class="side-column">
+            <article class="panel profile-panel">
+              <div class="avatar">🇮🇹</div>
+              <h3>Seu percurso</h3>
+              <p id="userEmail" class="muted user-email"></p>
+              <div class="level-line">
+                <span>Próximo nível</span>
+                <b id="xpToNext">100 XP</b>
+              </div>
+              <div class="progress-track">
+                <div id="xpProgress" class="progress-fill" style="width:0%"></div>
+              </div>
+              <p class="small muted">Ganhe XP completando lições e desafios.</p>
+            </article>
+
+            <article class="panel tip-panel culture-panel">
+              <span class="eyebrow">TACCUINO CULTURALE</span>
+              <div class="culture-mark">“</div>
+              <h3>Aprenda com a cultura</h3>
+              <p>
+                “Piano piano” é uma forma de dizer “devagar, aos poucos”.
+                Na Itália, essa expressão lembra que as coisas boas levam tempo.
+              </p>
+              <span class="culture-source">NOTA CULTURAL Nº 01</span>
+            </article>
+
+            <article class="panel calendar-panel">
+              <div class="panel-heading">
